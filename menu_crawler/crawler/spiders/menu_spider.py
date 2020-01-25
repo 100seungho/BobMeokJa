@@ -11,12 +11,12 @@ class MenuSpider(scrapy.Spider):
         counter = 0
         urls = []
 
-        urls.append(f'http://snuco.snu.ac.kr/ko/foodmenu?field_menu_date_value_1[value][date]=&field_menu_date_value[value][date]=01/22/2020')
+        # urls.append(f'http://snuco.snu.ac.kr/ko/foodmenu?field_menu_date_value_1[value][date]=&field_menu_date_value[value][date]=01/22/2020')
 
-        # while counter < 7:
-        #     urls.append(f'http://snuco.snu.ac.kr/ko/foodmenu?field_menu_date_value_1[value][date]=&field_menu_date_value[value][date]={dt.strftime("%m/%d/%Y")}')
-        #     dt += datetime.timedelta(days=1)
-        #     counter += 1
+        while counter < 7:
+            urls.append(f'http://snuco.snu.ac.kr/ko/foodmenu?field_menu_date_value_1[value][date]=&field_menu_date_value[value][date]={dt.strftime("%m/%d/%Y")}')
+            dt += datetime.timedelta(days=1)
+            counter += 1
 
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -45,7 +45,7 @@ class MenuSpider(scrapy.Spider):
                 self.date = date
 
             def new_menu(self, meal_name, time_for):
-                menu = {}
+                menu = MealItem()
                 
                 name_tel = self.parse_restaurant(self.name)
                 menu['restaurant_name'] = name_tel[0]
@@ -88,8 +88,10 @@ class MenuSpider(scrapy.Spider):
 
                 self.menus.append(menu)
                 
+                return menu
+                
             def new_menu_301(self, meal_name):
-                menu = {}
+                menu = MealItem()
                 
                 name_tel = self.parse_restaurant(self.name)
                 menu['restaurant_name'] = name_tel[0]
@@ -109,9 +111,11 @@ class MenuSpider(scrapy.Spider):
                 menu['time_for'] = "lunch"
                 
                 self.menus.append(menu)
+
+                return menu
             
             def new_menu_301_2(self, main_meal, side_meal):
-                menu = {}
+                menu = MealItem()
                 
                 name_tel = self.parse_restaurant(self.name)
                 menu['restaurant_name'] = name_tel[0]
@@ -132,8 +136,10 @@ class MenuSpider(scrapy.Spider):
                 
                 self.menus.append(menu)
 
+                return menu
+
             def new_menu_dure(self, meal_name, time_for):
-                menu = {}
+                menu = MealItem()
                 
                 name_tel = self.parse_restaurant(self.name)
                 menu['restaurant_name'] = name_tel[0]
@@ -153,6 +159,8 @@ class MenuSpider(scrapy.Spider):
                 menu['time_for'] = time_for
                 
                 self.menus.append(menu)
+
+                return menu
             
             @staticmethod
             def parse_restaurant(restaurant):
@@ -214,7 +222,7 @@ class MenuSpider(scrapy.Spider):
                 dinner = table_row.css("td.views-field-field-dinner p::text").getall()
 
                 if breakfast is not None:
-                    menus[index].new_menu(breakfast, 'breakfast')
+                    breakfast = menus[index].new_menu(breakfast, 'breakfast')
                     
                 if lunch is not None:
                     for menu in lunch:
@@ -245,7 +253,7 @@ class MenuSpider(scrapy.Spider):
                 dinner = table_row.css("td.views-field-field-dinner p::text").getall()
 
                 if lunch is not None:
-                    menus[index].new_menu_dure(lunch[1], "lunch"
+                    menus[index].new_menu_dure(lunch[1], "lunch")
 
                 if dinner is not None:
                     menus[index].new_menu_dure(dinner[1], "dinner")
@@ -253,7 +261,6 @@ class MenuSpider(scrapy.Spider):
         
         for menu in menus:
             yield {
-                menu.menus[0]['restaurant_name']: menu.menus
+                f"{menu.menus[0]['restaurant_name']}_{menu.menus[0]['date']}": menu.menus
                 # menu.name: menu.menus
             }
-            
