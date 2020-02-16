@@ -38,14 +38,6 @@ class CrawlerPipeline(object):
     def store_db(self, item):
         insert_table = """INSERT INTO menu{} VALUES (?,?,?,?,?,?,?,?,?)""".format(item['date'])
 
-        # insert_table = """INSERT INTO menu{} VALUES (?,?,?,?,?,?,?,?,?)
-        # SELECT menu_name FROM menu{}
-        # WHERE NOT EXISTS(
-        #     SELECT 1 FROM menu{}
-        #     WHERE menu_name = {}
-        #     )
-        # """.format(item['date'], item['date'], item['date'], item['name'])
-
         self.curr.execute(insert_table, (
             item['restaurant_name'],
             item['restaurant_tel'],
