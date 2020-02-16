@@ -34,7 +34,7 @@ class MenuSpider(scrapy.Spider):
             with open(filename, 'wb') as f:
                 f.write(response.body)
             self.log('Saved file %s' % filename)
-            
+
         menu_by_restaurant = response.css("tbody tr")
 
         menus = []
@@ -90,9 +90,20 @@ class MenuSpider(scrapy.Spider):
                 
         
         for menu in menus:
-            yield {
-                "date": menu.menus[0]['date'],
-                "restaurant": menu.menus[0]['restaurant_name'],
-                "menu": menu.menus
-                # menu.name: menu.menus
-            }
+            for _menu in menu.menus:
+                yield {'restaurant_name': _menu['restaurant_name'],
+                    'restaurant_tel' : _menu['restaurant_tel'],
+                    'name' : _menu['name'],
+                    'price' : _menu['price'],
+                    'no_pork' : _menu['no_pork'],
+                    'is_vege' : _menu['is_vege'],
+                    'is_halal' : _menu['is_halal'],
+                    'date' : _menu['date'],
+                    'time_for' : _menu['time_for'],
+                }
+            # yield {
+            #     "date": menu.menus[0]['date'],
+            #     "restaurant": menu.menus[0]['restaurant_name'],
+            #     "menu": menu.menus
+            #     # menu.name: menu.menus
+            # }

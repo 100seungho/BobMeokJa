@@ -47,7 +47,7 @@ class Menu:
             menu['is_vege'] = False
             menu['is_halal'] = False
         
-        menu['date'] = f"{self.date['month']}/{self.date['day']}/{self.date['year']}"
+        menu['date'] = f"{self.date['year']}{self.date['month']}{self.date['day']}"
         menu['time_for'] = time_for
 
         self.menus.append(menu)
@@ -71,7 +71,7 @@ class Menu:
         menu['is_vege'] = False
         menu['is_halal'] = False
         
-        menu['date'] = f"{self.date['month']}/{self.date['day']}/{self.date['year']}"
+        menu['date'] = f"{self.date['year']}{self.date['month']}{self.date['day']}"
         menu['time_for'] = "lunch"
         
         self.menus.append(menu)
@@ -95,7 +95,7 @@ class Menu:
         menu['is_vege'] = False
         menu['is_halal'] = False
         
-        menu['date'] = f"{self.date['month']}/{self.date['day']}/{self.date['year']}"
+        menu['date'] = f"{self.date['year']}{self.date['month']}{self.date['day']}"
         menu['time_for'] = "lunch"
         
         self.menus.append(menu)
@@ -119,7 +119,7 @@ class Menu:
         menu['is_vege'] = False
         menu['is_halal'] = False
         
-        menu['date'] = f"{self.date['month']}/{self.date['day']}/{self.date['year']}"
+        menu['date'] = f"{self.date['year']}{self.date['month']}{self.date['day']}"
         menu['time_for'] = time_for
         
         self.menus.append(menu)
