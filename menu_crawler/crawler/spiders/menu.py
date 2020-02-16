@@ -1,3 +1,4 @@
+import html
 from ..items import MealItem
 
 class Menu:

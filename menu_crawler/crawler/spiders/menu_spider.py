@@ -1,4 +1,4 @@
-import scrapy, datetime, html
+import scrapy, datetime
 from .menu import Menu
 
 
@@ -10,8 +10,6 @@ class MenuSpider(scrapy.Spider):
 
         counter = 0
         urls = []
-
-        # urls.append(f'http://snuco.snu.ac.kr/ko/foodmenu?field_menu_date_value_1[value][date]=&field_menu_date_value[value][date]=01/22/2020')
 
         while counter < 7:
             urls.append(f'http://snuco.snu.ac.kr/ko/foodmenu?field_menu_date_value_1[value][date]=&field_menu_date_value[value][date]={dt.strftime("%m/%d/%Y")}')
@@ -93,6 +91,8 @@ class MenuSpider(scrapy.Spider):
         
         for menu in menus:
             yield {
-                f"{menu.menus[0]['restaurant_name']}_{menu.menus[0]['date']}": menu.menus
+                "date": menu.menus[0]['date'],
+                "restaurant": menu.menus[0]['restaurant_name'],
+                "menu": menu.menus
                 # menu.name: menu.menus
             }
